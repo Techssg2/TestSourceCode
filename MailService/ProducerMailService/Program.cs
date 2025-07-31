@@ -13,29 +13,48 @@ namespace ProducerMailService
             {
                 HostName = "localhost",
                 UserName = "guest",
-                Password = "guest"
+                Password = "guest",
+                // Add connection efficiency settings
+                RequestedHeartbeat = TimeSpan.FromSeconds(60),
+                AutomaticRecoveryEnabled = true,
+                NetworkRecoveryInterval = TimeSpan.FromSeconds(10)
             };
 
+            // Use proper resource management
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
             int count = 1;
 
-            while (true)
+            try
             {
-                string message = $"Message {count++} at {DateTime.Now:HH:mm:ss}";
-                var body = Encoding.UTF8.GetBytes(message);
+                while (true)
+                {
+                    string message = $"Message {count++} at {DateTime.Now:HH:mm:ss}";
+                    var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(
-                    exchange: "demo.exchange",
-                    routingKey: "demo.key",
-                    basicProperties: null,
-                    body: body
-                );
+                    // Add message properties for better efficiency
+                    var properties = channel.CreateBasicProperties();
+                    properties.Persistent = true; // Make messages durable
+                    properties.MessageId = Guid.NewGuid().ToString();
+                    properties.Timestamp = new AmqpTimestamp(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
 
-                Console.WriteLine($"🚀 Sent: {message}");
+                    channel.BasicPublish(
+                        exchange: "demo.exchange",
+                        routingKey: "demo.key",
+                        basicProperties: properties,
+                        body: body
+                    );
 
-                Thread.Sleep(10_000); // 10 giây
+                    Console.WriteLine($"🚀 Sent: {message}");
+
+                    Thread.Sleep(10_000); // 10 giây
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error in producer: {ex.Message}");
+                throw;
             }
         }
     }
