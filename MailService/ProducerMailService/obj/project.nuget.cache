@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "H9bS10398DFY06kjkUN9eRafiNlTyADqyeuq2rF/dJJ79B/k52gm7vF7RxI4k/7aomrUjjh193v/SekMtHZIdQ==",
+  "dgSpecHash": "pujXEu1K/XGK/gE6xESXM1Nfa8+GERLwUWg6A44+9W7pPp+6pxzLx6NRfj32HPXKUTqgCH5ttjlrbMq6N6jddA==",
   "success": true,
-  "projectFilePath": "/home/runner/work/TestSourceCode/TestSourceCode/MailService/AppHost/AppHost.csproj",
+  "projectFilePath": "/home/runner/work/TestSourceCode/TestSourceCode/MailService/ProducerMailService/ProducerMailService.csproj",
   "expectedPackageFiles": [
     "/home/runner/.nuget/packages/rabbitmq.client/6.4.0/rabbitmq.client.6.4.0.nupkg.sha512",
     "/home/runner/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
